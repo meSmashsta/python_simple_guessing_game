@@ -61,10 +61,10 @@ class QuestionForm():
         label = tk.Label(self.page, text=title, font="Helvetica 18 bold")
         label.place(x=20, y=40, relx=.5, anchor="center")
 
-        word = random.choice(self.words)
-        display = "".join(random.sample(word, len(word)))
+        selectedWord = random.choice(self.words)
+        randomWord = "".join(random.sample(selectedWord, len(selectedWord)))
         
-        lblDisplay = tk.Label(self.page, text=display, font="Helvetica 14 bold underline")
+        lblDisplay = tk.Label(self.page, text=randomWord, font="Helvetica 14 bold underline")
         lblDisplay.place(x=20, y=80, relx=.5, anchor="center")
         
 
