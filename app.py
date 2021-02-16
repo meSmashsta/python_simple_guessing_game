@@ -6,7 +6,8 @@ from player import Player
 
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
+        tk.Frame.__init__(self, *args, **kwargs, bg="light sky blue")
+
     def show(self):
         self.lift()
 
@@ -55,6 +56,34 @@ class Page4(Page):
         Page.__init__(self, *args, **kwargs)
         QuestionForm(self, self.words, "Random Words", 50)
 
+
+class Page5(Page):
+    words = ["loop", "positive", "negative", "rainbow", "computer",
+             "science", "programming", "breakfast", "problem", "belief",
+             "culture", "crystal", "cable", "transaction", "condition",
+             "bundle", "education", "love", "die", "operation", "negative"
+                                                                "mathematics", "player", "condition", "reverse",
+             "water", "board", "laptop", "apple", "juice", "television",
+             "cloud", "fork", "engineering", "pool", "clove"]
+
+    def __init__(self, *args, **kwargs):
+        Page.__init__(self, *args, **kwargs)
+        QuestionForm(self, self.words, "Random Words", 50)
+
+
+class Page6(Page):
+    words = ["loop", "positive", "negative", "rainbow", "computer",
+             "science", "programming", "breakfast", "problem", "belief",
+             "culture", "crystal", "cable", "transaction", "condition",
+             "bundle", "education", "love", "die", "operation", "negative"
+                                                                "mathematics", "player", "condition", "reverse",
+             "water", "board", "laptop", "apple", "juice", "television",
+             "cloud", "fork", "engineering", "pool", "clove"]
+
+    def __init__(self, *args, **kwargs):
+        Page.__init__(self, *args, **kwargs)
+        QuestionForm(self, self.words, "Random Words", 50)
+
 class QuestionForm():
     def __init__(self, page, words, title, score = 25):
         self.page = page
@@ -62,7 +91,7 @@ class QuestionForm():
         self.score = score
         
         label = tk.Label(self.page, text=title, font="Helvetica 18 bold")
-        label.place(x=20, y=40, relx=.5, anchor="center")
+        label.place(x=20, y=60, relx=.5, anchor="center")
 
         lblScore = tk.Label(self.page, text="Score:")
         lblScore.place(x=20, y=20)
@@ -79,13 +108,13 @@ class QuestionForm():
         self.randomWord = "".join(random.sample(self.selectedWord, len(self.selectedWord)))
         
         lblDisplay = tk.Label(self.page, text=self.randomWord, font="Helvetica 14 bold underline")
-        lblDisplay.place(x=20, y=80, relx=.5, anchor="center")
+        lblDisplay.place(x=20, y=100, relx=.5, anchor="center")
         
         lblAnswer = tk.Label(self.page, text="Answer")
-        lblAnswer.place(x=-20, y=120, relx=.5, anchor="center")
+        lblAnswer.place(x=-20, y=140, relx=.5, anchor="center")
         
         entryAnswer = tk.Entry(self.page)
-        entryAnswer.place(x=20, y=140, relx=.5, anchor="center")
+        entryAnswer.place(x=20, y=180, relx=.5, anchor="center")
         def onSubmit():
             if (entryAnswer.get() == self.selectedWord):
                 ctypes.windll.user32.MessageBoxW(0, "Congrats on guessing the correct word!", 'Correct answer!')
@@ -98,7 +127,7 @@ class QuestionForm():
                 ctypes.windll.user32.MessageBoxW(0, "Nice try! Try again!", 'Try Again')
                         
         btnSubmit = tk.Button(self.page, text="Submit", command=onSubmit)
-        btnSubmit.place(x=20, y=180, relx=.5, anchor="center")
+        btnSubmit.place(x=20, y=220, relx=.5, anchor="center")
 
 class App(tk.Frame):
     player = Player()
@@ -109,6 +138,8 @@ class App(tk.Frame):
         p2 = Page2(self)
         p3 = Page3(self)
         p4 = Page4(self)
+        p5 = Page5(self)
+        p6 = Page6(self)
 
         buttonframe = tk.Frame(self)
         container = tk.Frame(self)
@@ -119,16 +150,22 @@ class App(tk.Frame):
         p2.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         p3.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         p4.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p5.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        p6.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
         b1 = tk.Button(buttonframe, text="Animals", command=p1.lift)
         b2 = tk.Button(buttonframe, text="Places", command=p2.lift)
         b3 = tk.Button(buttonframe, text="Things", command=p3.lift)
         b4 = tk.Button(buttonframe, text="Random  Words", command=p4.lift)
+        b5 = tk.Button(buttonframe, text="Tutorial", command=p5.lift)
+        b6 = tk.Button(buttonframe, text="About", command=p6.lift)
 
         b1.pack(side="left")
         b2.pack(side="left")
         b3.pack(side="left")
         b4.pack(side="left")
+        b5.pack(side="right")
+        b6.pack(side="right")
 
         p1.show()
 
