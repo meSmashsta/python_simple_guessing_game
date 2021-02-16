@@ -1,6 +1,5 @@
 import tkinter as tk
 import ctypes
-import pprint
 import json
 import random
 from player import Player
@@ -54,12 +53,13 @@ class Page4(Page):
     
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
-        QuestionForm(self, self.words, "Random Words")
+        QuestionForm(self, self.words, "Random Words", 50)
 
 class QuestionForm():
-    def __init__(self, page, words, title):
+    def __init__(self, page, words, title, score = 25):
         self.page = page
         self.words = words
+        self.score = score
         
         label = tk.Label(self.page, text=title, font="Helvetica 18 bold")
         label.place(x=20, y=40, relx=.5, anchor="center")
@@ -75,11 +75,10 @@ class QuestionForm():
         
         App.player.scoreSubject.subscribe(onScoreChange)
 
-        selectedWord = random.choice(self.words)
-        print(selectedWord)
-        randomWord = "".join(random.sample(selectedWord, len(selectedWord)))
+        self.selectedWord = random.choice(self.words)
+        self.randomWord = "".join(random.sample(self.selectedWord, len(self.selectedWord)))
         
-        lblDisplay = tk.Label(self.page, text=randomWord, font="Helvetica 14 bold underline")
+        lblDisplay = tk.Label(self.page, text=self.randomWord, font="Helvetica 14 bold underline")
         lblDisplay.place(x=20, y=80, relx=.5, anchor="center")
         
         lblAnswer = tk.Label(self.page, text="Answer")
@@ -88,10 +87,13 @@ class QuestionForm():
         entryAnswer = tk.Entry(self.page)
         entryAnswer.place(x=20, y=140, relx=.5, anchor="center")
         def onSubmit():
-            if (entryAnswer.get() == selectedWord):
+            if (entryAnswer.get() == self.selectedWord):
                 ctypes.windll.user32.MessageBoxW(0, "Congrats on guessing the correct word!", 'Correct answer!')
                 entryAnswer.delete(0, 'end')
-                App.player.addScore(25)
+                App.player.addScore(self.score)
+                self.selectedWord = random.choice(self.words)
+                self.randomWord = "".join(random.sample(self.selectedWord, len(self.selectedWord)))
+                lblDisplay['text'] = self.randomWord
             else:
                 ctypes.windll.user32.MessageBoxW(0, "Nice try! Try again!", 'Try Again')
                         
