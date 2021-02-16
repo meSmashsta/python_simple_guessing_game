@@ -1,4 +1,5 @@
 import tkinter as tk
+import ctypes
 import pprint
 import json
 import random
@@ -66,6 +67,21 @@ class QuestionForm():
         
         lblDisplay = tk.Label(self.page, text=randomWord, font="Helvetica 14 bold underline")
         lblDisplay.place(x=20, y=80, relx=.5, anchor="center")
+        
+        lblAnswer = tk.Label(self.page, text="Answer")
+        lblAnswer.place(x=-20, y=120, relx=.5, anchor="center")
+        
+        entryAnswer = tk.Entry(self.page)
+        entryAnswer.place(x=20, y=140, relx=.5, anchor="center")
+        def onSubmit():
+            if (entryAnswer.get() == selectedWord):
+                ctypes.windll.user32.MessageBoxW(0, "Congrats on guessing the correct word!", 'Correct answer!')
+                entryAnswer.delete(0, 'end')
+            else:
+                ctypes.windll.user32.MessageBoxW(0, "Nice try! Try again!", 'Try Again')
+                        
+        btnSubmit = tk.Button(self.page, text="Submit", command=onSubmit)
+        btnSubmit.place(x=20, y=180, relx=.5, anchor="center")
         
 
 class MainView(tk.Frame):
