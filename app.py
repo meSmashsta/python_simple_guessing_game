@@ -3,6 +3,7 @@ import ctypes
 import pprint
 import json
 import random
+from player import Player
 
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
@@ -59,10 +60,23 @@ class QuestionForm():
     def __init__(self, page, words, title):
         self.page = page
         self.words = words
+        
         label = tk.Label(self.page, text=title, font="Helvetica 18 bold")
         label.place(x=20, y=40, relx=.5, anchor="center")
 
+        lblScore = tk.Label(self.page, text="Score:")
+        lblScore.place(x=20, y=20)
+                
+        lblActualScore = tk.Label(self.page, text=App.player.score)
+        lblActualScore.place(x=60, y=20)
+        
+        def onScoreChange(score):
+            lblActualScore['text'] = score
+        
+        App.player.scoreSubject.subscribe(onScoreChange)
+
         selectedWord = random.choice(self.words)
+        print(selectedWord)
         randomWord = "".join(random.sample(selectedWord, len(selectedWord)))
         
         lblDisplay = tk.Label(self.page, text=randomWord, font="Helvetica 14 bold underline")
@@ -77,14 +91,16 @@ class QuestionForm():
             if (entryAnswer.get() == selectedWord):
                 ctypes.windll.user32.MessageBoxW(0, "Congrats on guessing the correct word!", 'Correct answer!')
                 entryAnswer.delete(0, 'end')
+                App.player.addScore(25)
             else:
                 ctypes.windll.user32.MessageBoxW(0, "Nice try! Try again!", 'Try Again')
                         
         btnSubmit = tk.Button(self.page, text="Submit", command=onSubmit)
         btnSubmit.place(x=20, y=180, relx=.5, anchor="center")
-        
 
-class MainView(tk.Frame):
+class App(tk.Frame):
+    player = Player()
+    
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         p1 = Page1(self)
@@ -116,7 +132,7 @@ class MainView(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    main = MainView(root)
+    main = App(root)
     main.pack(side="top", fill="both", expand=True)
     root.wm_geometry("400x400")
     root.mainloop()
